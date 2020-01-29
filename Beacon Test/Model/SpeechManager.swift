@@ -9,6 +9,10 @@
 import Foundation
 import AVFoundation
 
+/**
+ Clase responsable de que la aplicación hable en voz alta al usuario. Se utiliza un sintetizador de voz integrado, en esta clase se configuran los detalles de dicho sintetizador tales como el idioma, el ritmo de habla, la voz, etc...
+ */
+
 struct SpeechManager {
     
     let synthesizer = AVSpeechSynthesizer()

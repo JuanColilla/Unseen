@@ -10,17 +10,25 @@ import UIKit
 import CoreLocation
 import UserNotifications
 
+/**
+ Este controlador se encarga de la vista correspondiente a la disposición de los beacons o balizas bluetooth detectados en pantalla. En este controlador se interactua directamente tanto con **"BeaconManager.swift"** como con **"SpeechManager.swift"**. El controlador a su vez actúa como "delegate" del modelo **"BeaconManaer"**.
+ */
+
 class BeaconsViewController: UIViewController, CLLocationManagerDelegate {
+    
     
     let beaconManager = BeaconManager()
     let speechManager = SpeechManager()
+    
+    /// Array de **CLBeacon** que contiene TODOS los beacons detectados, ordenados en base a su proximidad.
     var beaconsInRange = [CLBeacon]()
     
+    /// Esta variable sirve como validación para comprobar si el usuario permanece dentro o no de una zona monitorizada (al alcance de un beacon). Su valor es **false** por defecto.
     var inside: Bool = false
     
-    var messageToTheUser: String = ""
-    
+    /// Vista que contiene la imagen del dispositivo, ubicada en el centro de la pantalla.
     @IBOutlet weak var deviceImage: UIImageView!
+    /// Array de vistas destinadas a contener una imagen que represente de forma visual la intensidad de señal de los beacons detectados.
     @IBOutlet var imageViews: [UIImageView]!
     @IBOutlet var valuesDisplay: [UITextField]!
     
@@ -126,7 +134,8 @@ class BeaconsViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func speakToTheUser(whatToSpeak: String) {
-        
+
+        var messageToTheUser: String = ""
         var validation = false
         
         switch whatToSpeak {

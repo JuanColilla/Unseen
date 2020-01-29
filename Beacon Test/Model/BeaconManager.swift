@@ -9,6 +9,13 @@
 import Foundation
 import CoreLocation
 
+/**
+Clase responsable de la interacción entre la aplicación y los servicios nativos de localización e interacción con balizas bluetooth. Basada en las APIs "CoreLocation" y "UserNotifications".
+
+Se puede instanciar sin necesidad de ningún parámetro de entrada.
+
+*/
+
 class BeaconManager {
     
     let locationManager: CLLocationManager = CLLocationManager()
