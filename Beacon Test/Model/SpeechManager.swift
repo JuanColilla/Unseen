@@ -22,6 +22,8 @@ struct SpeechManager {
         // voice.language = "es-ES" / Falta hacer que la app hable en Español.
     }
     
+    /// <#Description#>
+    /// - Parameter textToSpeak: <#textToSpeak description#>
     func speak(textToSpeak: String) {
         let utterance = AVSpeechUtterance(string: textToSpeak)
         utterance.rate = 0.5

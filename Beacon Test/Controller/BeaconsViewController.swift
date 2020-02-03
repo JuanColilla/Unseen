@@ -13,7 +13,6 @@ import UserNotifications
 /**
  Este controlador se encarga de la vista correspondiente a la disposición de los beacons o balizas bluetooth detectados en pantalla. En este controlador se interactua directamente tanto con **"BeaconManager.swift"** como con **"SpeechManager.swift"**. El controlador a su vez actúa como "delegate" del modelo **"BeaconManaer"**.
  */
-
 class BeaconsViewController: UIViewController, CLLocationManagerDelegate {
     
     
@@ -23,7 +22,7 @@ class BeaconsViewController: UIViewController, CLLocationManagerDelegate {
     /// Array de **CLBeacon** que contiene TODOS los beacons detectados, ordenados en base a su proximidad.
     var beaconsInRange = [CLBeacon]()
     
-    /// Esta variable sirve como validación para comprobar si el usuario permanece dentro o no de una zona monitorizada (al alcance de un beacon). Su valor es **false** por defecto.
+    /// Esta variable sirve como validación para comprobar si el usuario permanece dentro o no de una zona monitorizada (al alcance de un beacon). Su valor es **false** por defecto. Se utiliza en la función **speakToTheUser()**.
     var inside: Bool = false
     
     /// Vista que contiene la imagen del dispositivo, ubicada en el centro de la pantalla.
@@ -56,12 +55,10 @@ class BeaconsViewController: UIViewController, CLLocationManagerDelegate {
         } else {
             sendNotification(mode: "entry", region: beaconManager.region)
         }
-        // Pasamos a organizar los beacons que nos sirven en la pantalla.
-        imageViews.forEach { $0.image = UIImage(named: "Beacon_OFF") }
-        valuesDisplay.forEach { $0.text = "0" }
+//        imageViews.forEach { $0.image = UIImage(named: "Beacon_OFF") }
+//        valuesDisplay.forEach { $0.text = "0" }
         for ((beacon, imageView), display) in zip(zip(beaconsInRange, imageViews), valuesDisplay) {
             orderAndDisplayBeaconsOnScreen(beacon: beacon, imageView: imageView, display: display)
-            // Por decidir, actualmente se muestra la distancia en metros encima de cada imagen/beacon.
         }
             
     }
@@ -69,15 +66,23 @@ class BeaconsViewController: UIViewController, CLLocationManagerDelegate {
     // Se necesita una función que compruebe la ubicación del usuario y en base a cambios en esta hable y diga si se ha entrado o salido de la zona que se quiere monitorizar (punto de interés). Podría ser posible hacer esto sin necesidad de la ubicación? Basándose en la disponibilidad de un beacon?
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        sendNotification(mode: "entry", region: region)
+        if (!inside) {
+            sendNotification(mode: "entry", region: region)
+        }
     }
-
+    
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        sendNotification(mode: "exit", region: region)
+        if (inside) {
+            sendNotification(mode: "exit", region: region)
+        }
     }
     
     /**
      Clasifica los beacons detectados y los distribuye en la pantalla asignandoles una imagen en base a su intensidad de señal.
+        - parameter beacon: Beacon de referencia para asociarle una imagen en un **imageView** y un valor en un **textField**.
+        - parameter imageView: Vista que contendrá la imagen asociada al beacon.
+        - parameter display: Caja de texto que contendrá el valor asociado al beacon, en este caso su intensidad de señal en **RSSI**.
+     
      */
     func orderAndDisplayBeaconsOnScreen(beacon: CLBeacon, imageView: UIImageView, display: UITextField) {
         switch beacon.accuracy {
@@ -101,6 +106,10 @@ class BeaconsViewController: UIViewController, CLLocationManagerDelegate {
         
     }
     
+    /// Se encarga de gestionar la notificación al usuario así como de llamar al sintetizador de voz que anunciará lo oportuno basado en los parámetros de entrada.
+    /// - Parameters:
+    ///   - mode: Informa al método de si este es llamado por la **entrada** en una CLRegion o la **salida** de esta.
+    ///   - region: Geoperímetro monitorizado por la aplicación y el gestor de beacons.
     func sendNotification(mode: String, region: CLRegion) {
         let content = UNMutableNotificationContent()
         let notificationTrigger = UNLocationNotificationTrigger(region: region, repeats: true)
@@ -127,6 +136,8 @@ class BeaconsViewController: UIViewController, CLLocationManagerDelegate {
         speakToTheUser(whatToSpeak: mode)
     }
     
+    /// Esta función llama al sintetizador de voz pasándole un mensaje cuyo contenido se decide en base a su único parámetro de entrada.
+    /// - Parameter whatToSpeak: Un string reducido de una sola palabra que le indica a la función si debe escoger el mensaje de entrada o de salida.
     func speakToTheUser(whatToSpeak: String) {
 
         var messageToTheUser: String = ""
