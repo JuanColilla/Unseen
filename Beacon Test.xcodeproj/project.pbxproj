@@ -77,13 +77,12 @@
 		A064382223A12ADE0050D43E /* Beacon Test */ = {
 			isa = PBXGroup;
 			children = (
+				A064383123A12AE40050D43E /* Info.plist */,
 				A064382323A12ADE0050D43E /* AppDelegate.swift */,
 				A064382523A12ADE0050D43E /* SceneDelegate.swift */,
 				A09FA03B23D88FF7002ED971 /* Model */,
 				A09FA03D23D89018002ED971 /* View */,
 				A09FA03C23D89000002ED971 /* Controller */,
-				A064382C23A12AE40050D43E /* Assets.xcassets */,
-				A064383123A12AE40050D43E /* Info.plist */,
 			);
 			path = "Beacon Test";
 			sourceTree = "<group>";
@@ -108,6 +107,7 @@
 		A09FA03D23D89018002ED971 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				A064382C23A12AE40050D43E /* Assets.xcassets */,
 				A064382923A12ADF0050D43E /* Main.storyboard */,
 				A064382E23A12AE40050D43E /* LaunchScreen.storyboard */,
 			);

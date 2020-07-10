@@ -19,7 +19,7 @@ Se puede instanciar sin necesidad de ningún parámetro de entrada.
 class BeaconManager {
     
     let locationManager: CLLocationManager = CLLocationManager()
-    var region = CLBeaconRegion(beaconIdentityConstraint: CLBeaconIdentityConstraint(uuid: UUID(uuidString: "E2C56DB5-DFFB-48D2-B060-D0F5A71096E0")!), identifier: "Test Beacons")
+    var region = CLBeaconRegion(beaconIdentityConstraint: CLBeaconIdentityConstraint(uuid: UUID(uuidString: /*"E2C56DB5-DFFB-48D2-B060-D0F5A71096E0"*/"B9407F30-F5F8-466E-AFF9-25556B57FE6D")!), identifier: "Test Beacons")
     
     init() {
         locationManager.allowsBackgroundLocationUpdates = true
@@ -28,6 +28,7 @@ class BeaconManager {
         locationManager.startMonitoringSignificantLocationChanges()
     }
     
+    /// Desencadena el proceso requerido para la autorización por parte del usuario (en caso de no tenerla) para hacer uso de su ubicación.
     func checkUserPermissions() {
         
         switch (CLLocationManager.authorizationStatus()) {
@@ -53,7 +54,7 @@ class BeaconManager {
         region.notifyOnExit = true
     }
     func scanForBeacons(){
-        locationManager.startRangingBeacons(satisfying: CLBeaconIdentityConstraint(uuid: UUID(uuidString: "E2C56DB5-DFFB-48D2-B060-D0F5A71096E0")!))
+        locationManager.startRangingBeacons(satisfying: CLBeaconIdentityConstraint(uuid: UUID(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D")!))
     }
     
     
